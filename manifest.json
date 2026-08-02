@@ -2,7 +2,7 @@
   "name": "CCA-F Exam Prep",
   "short_name": "CCA-F Prep",
   "description": "Claude Certified Architect - Foundations Study Guide & Mock Tests",
-  "start_url": "/",
+  "start_url": "./",
   "display": "standalone",
   "background_color": "#0f0f1a",
   "theme_color": "#1a1a2e",

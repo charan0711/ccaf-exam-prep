@@ -463,6 +463,10 @@ function getReadinessHtml() {
   `;
 }
 
+// Make functions globally accessible for onclick handlers
+window.openChapter = openChapter;
+window.render = render;
+
 // Initial render
 render();
 

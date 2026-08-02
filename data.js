@@ -215,7 +215,7 @@ def run_agent(user_message, system_prompt="You are a helpful support agent."):
                 "isError": True,
                 "errorCategory": "policy",
                 "isRetryable": False,
-                "message": f"Refund of ${amount} exceeds $500 policy limit"
+                "message": f"Refund of \${amount} exceeds $500 policy limit"
             })
         return json.dumps({"success": True, "refund_id": "REF-98765"})
     else:
@@ -278,7 +278,7 @@ def enforce_refund_policy(tool_name, tool_input):
                 "isError": True,
                 "errorCategory": "policy",
                 "isRetryable": False,
-                "message": f"Blocked: ${amount} exceeds ${REFUND_CAP} refund cap. Escalate to manager."
+                "message": f"Blocked: \${amount} exceeds \${REFUND_CAP} refund cap. Escalate to manager."
             }
         }
     return {"allowed": True}
@@ -904,11 +904,11 @@ print(response.usage.cache_read_input_tokens)  # > 0</div>
               options: [
                 "Directly in .mcp.json",
                 "In the tool description",
-                "In environment variables referenced via ${ENV_VAR} in the config",
+                "In environment variables referenced via \${ENV_VAR} in the config",
                 "In the system prompt"
               ],
               correct: 2,
-              explanation: "${ENV_VAR} expansion in .mcp.json keeps secrets out of source control. The config file is committed; the actual values live in environment variables that are never committed."
+              explanation: "\${ENV_VAR} expansion in .mcp.json keeps secrets out of source control. The config file is committed; the actual values live in environment variables that are never committed."
             },
             {
               q: "You want to prevent the model from calling tools during a specific turn (e.g., for a summary response). What do you set?",
@@ -2005,9 +2005,9 @@ def call_claude(messages):
       questions: [
         {
           q: "Your MCP server needs to connect to a remote API using an auth token. Which transport and config is correct?",
-          options: ["stdio with token in args", "SSE or HTTP with token in headers via ${ENV_VAR}", "stdio with token hardcoded in .mcp.json", "HTTP with token in the URL query string"],
+          options: ["stdio with token in args", "SSE or HTTP with token in headers via \${ENV_VAR}", "stdio with token hardcoded in .mcp.json", "HTTP with token in the URL query string"],
           correct: 1,
-          explanation: "Remote APIs use SSE or HTTP transport. Auth tokens go in headers using ${ENV_VAR} expansion. Never hardcode secrets in config files; never put tokens in URLs (they end up in logs)."
+          explanation: "Remote APIs use SSE or HTTP transport. Auth tokens go in headers using \${ENV_VAR} expansion. Never hardcode secrets in config files; never put tokens in URLs (they end up in logs)."
         },
         {
           q: "A tool description says 'Searches stuff'. What's wrong?",
@@ -2022,8 +2022,8 @@ def call_claude(messages):
           explanation: "type: 'any' means the model MUST call some tool but can choose which one. Use this for classification or routing where any tool is acceptable but text-only responses aren't."
         },
         {
-          q: "Your .mcp.json has ${GITHUB_TOKEN} but the env var isn't set. What happens?",
-          options: ["Server uses empty string", "Server fails to start with a readable error", "Claude Code ignores the server", "The literal string '${GITHUB_TOKEN}' is used"],
+          q: "Your .mcp.json has \${GITHUB_TOKEN} but the env var isn't set. What happens?",
+          options: ["Server uses empty string", "Server fails to start with a readable error", "Claude Code ignores the server", "The literal string '\${GITHUB_TOKEN}' is used"],
           correct: 1,
           explanation: "When a referenced env var is unset, the MCP server fails to start. This is intentional — it prevents running with missing credentials. Set the var, restart the server."
         },
@@ -2226,10 +2226,10 @@ def call_claude(messages):
           explanation: "While subtree CLAUDE.md works, .claude/rules/ with path globs is the most precise: each rule file specifies exactly which file patterns it applies to. This prevents any cross-contamination between service conventions."
         },
         {
-          q: "SCENARIO: An MCP server works locally but fails in staging. The error is 'Bearer token undefined'. The .mcp.json uses ${API_TOKEN}. What's wrong?",
+          q: "SCENARIO: An MCP server works locally but fails in staging. The error is 'Bearer token undefined'. The .mcp.json uses \${API_TOKEN}. What's wrong?",
           options: ["Token expired", "The API_TOKEN environment variable isn't set in the staging environment", "SSE transport doesn't support auth", "The URL is wrong"],
           correct: 1,
-          explanation: "${ENV_VAR} expansion requires the variable to actually be set in the runtime environment. If it works locally (where you have API_TOKEN set) but fails in staging, staging is missing the env var."
+          explanation: "\${ENV_VAR} expansion requires the variable to actually be set in the runtime environment. If it works locally (where you have API_TOKEN set) but fails in staging, staging is missing the env var."
         },
         {
           q: "SCENARIO: A customer says 'I'm done trying to explain this. Give me a supervisor.' The agent's issue is actually simple and almost resolved. What should the agent do?",
@@ -2368,9 +2368,9 @@ def call_claude(messages):
         },
         {
           q: "An SSE transport MCP server needs a Bearer token. Where does the token value go?",
-          options: ["In .mcp.json directly", "In an environment variable, referenced as ${TOKEN_VAR} in the headers config", "In CLAUDE.md", "In the tool description"],
+          options: ["In .mcp.json directly", "In an environment variable, referenced as \${TOKEN_VAR} in the headers config", "In CLAUDE.md", "In the tool description"],
           correct: 1,
-          explanation: "Auth tokens go in env vars, referenced via ${ENV_VAR} in the .mcp.json headers section. The config file is committed to git; the actual secret value lives outside source control in the environment."
+          explanation: "Auth tokens go in env vars, referenced via \${ENV_VAR} in the .mcp.json headers section. The config file is committed to git; the actual secret value lives outside source control in the environment."
         },
         {
           q: "Your agent handles 3 scenarios well but completely fails on scenario 4. The model improvises badly. Most effective fix?",
